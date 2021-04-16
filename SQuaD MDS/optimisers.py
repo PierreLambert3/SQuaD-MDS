@@ -44,7 +44,7 @@ def SQuaD_MDS(hparams, Xhd, Xld):
             squared_D = False
 
         np.random.shuffle(perms)
-        update = fast_distance_scaling_update(N, Xld, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, relative_rbf_distance)
+        fast_distance_scaling_update(N, Xld, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, relative_rbf_distance)
 
 @numba.jit(nopython=True, fastmath = True)
 def fast_distance_scaling_update(N, X_LD, LR, perms, batches_idxes, grad_acc,  Xhd, squared_D, Dhd_quartet, relative_rbf_distance):
@@ -75,8 +75,6 @@ def fast_distance_scaling_update(N, X_LD, LR, perms, batches_idxes, grad_acc,  X
         else:
             Dhd_quartet  /= np.sum(Dhd_quartet)
             quartet_grads = compute_quartet_grads(LD_points, Dhd_quartet)
-            # quartet_grads = grad_all_4_optimised(LD_points, Dhd_quartet)
-            # quartet_grads = grad_all_4_optimised(LD_points, Dhd_quartet)
 
         grad_acc[quartet[0], 0] += quartet_grads[0]
         grad_acc[quartet[0], 1] += quartet_grads[1]
@@ -145,7 +143,7 @@ def SQuaD_MDS_tsne(hparams, Xhd, Xld):
             P /= hparams["tsne exa"]
 
         np.random.shuffle(perms)
-        update = fast_distance_scaling_update_tsne(N, P, Xld, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier)
+        fast_distance_scaling_update_tsne(N, P, Xld, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier)
 
 def fast_distance_scaling_update_tsne(N, P, X_LD, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier):
     grad_acc.fill(0.)
