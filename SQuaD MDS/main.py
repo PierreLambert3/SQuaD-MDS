@@ -12,7 +12,7 @@ precompile()
 
 # ~~~~~~~~~~~~~~~~~~  loading the data. As highlighted in the paper, out method distinguishes itself mostly when the dimensionality is high ~~~~~~~~~~~~~~~~~~
 datasets = ['coil20', 'wine', 'airfoil', 'RNAseq']
-Xhd, Y = fetch_dataset(datasets[3])
+Xhd, Y = fetch_dataset(datasets[0])
 
 # ~~~~~~~~~~~~~~~~~~  PCA initialisation + scaling to get a std around 10 ~~~~~~~~~~~~~~~~~~
 # having an initial embedding in another scale would require some fiddling with the learning rate to adjust
@@ -81,7 +81,7 @@ print('hybrid SQuaD_MDS + light tSNE done in ', np.round(time_SQuaD_MDS_light_tS
 # ~~~~~~~~~~~~~~~~~~  hybrid SQuaD_MDS algorithm with some strong tSNE gradient ~~~~~~~~~~~~~~~~~~
 hparams = {
     'n iter': 1000,
-    'LR': 550,
+    'LR': 2000, # Higher learning rates tend to be better when mixing with tSNE gardients
     'exaggerate D': True,
     'stop exaggeration': 0.6,
     'tsne LR multiplier': 5.,
