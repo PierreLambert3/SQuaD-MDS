@@ -12,7 +12,7 @@ precompile()
 
 # ~~~~~~~~~~~~~~~~~~  loading the data. As highlighted in the paper, out method distinguishes itself mostly when the dimensionality is high ~~~~~~~~~~~~~~~~~~
 datasets = ['coil20', 'wine', 'airfoil', 'RNAseq']
-Xhd, Y = fetch_dataset(datasets[0])
+Xhd, Y = fetch_dataset(datasets[3])
 
 # ~~~~~~~~~~~~~~~~~~  PCA initialisation + scaling to get a std around 10 ~~~~~~~~~~~~~~~~~~
 # having an initial embedding in another scale would require some fiddling with the learning rate to adjust
