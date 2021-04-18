@@ -11,9 +11,19 @@ def precompile():
         'n iter': 10,
         'LR': 550,
         'exaggerate D': False,
-        'stop exaggeration': 0.85
+        'stop exaggeration': 0.6
     }
     SQuaD_MDS(hparams, np.random.uniform(size = 30*3).reshape((30,3)).astype(np.float64), 20*np.random.uniform(size = 30*2).reshape((30,2)).astype(np.float64))
+    hparams = {
+        'n iter': 10,
+        'LR': 550,
+        'exaggerate D': False,
+        'stop exaggeration': 0.6,
+        'tsne LR multiplier': 0.5,
+        'PP': 2.,
+        'tsne exa': 2.
+    }
+    SQuaD_MDS_tsne(hparams, np.random.uniform(size = 30*3).reshape((30,3)).astype(np.float64), 20*np.random.uniform(size = 30*2).reshape((30,2)).astype(np.float64))
     print('done\n')
 
 
@@ -145,10 +155,8 @@ def SQuaD_MDS_tsne(hparams, Xhd, Xld):
         np.random.shuffle(perms)
         fast_distance_scaling_update_tsne(N, P, Xld, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier)
 
-def fast_distance_scaling_update_tsne(N, P, X_LD, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier):
-    grad_acc.fill(0.)
-
-    # step 1 : distance scaling gradients using the quartet method
+@numba.jit(nopython=True, fastmath=True)
+def batch_optim(X_LD, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet):
     for batch_idx in batches_idxes:
         quartet = perms[batch_idx]
         LD_points   = X_LD[quartet]
@@ -181,6 +189,12 @@ def fast_distance_scaling_update_tsne(N, P, X_LD, LR, perms, batches_idxes, grad
         grad_acc[quartet[2], 1] += quartet_grads[5]
         grad_acc[quartet[3], 0] += quartet_grads[6]
         grad_acc[quartet[3], 1] += quartet_grads[7]
+
+def fast_distance_scaling_update_tsne(N, P, X_LD, LR, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet, tsne_LR_multiplier):
+    grad_acc.fill(0.)
+
+    # step 1 : distance scaling gradients using the quartet method
+    batch_optim(X_LD, perms, batches_idxes, grad_acc, Xhd, squared_D, Dhd_quartet)
 
     # step 2 : t-SNE gradients, the code is taken for scikit-learn's github
     _, tsne_grad = KL_divergeance_BH(X_LD.ravel(), P, 1, N, 2, 0, False)
