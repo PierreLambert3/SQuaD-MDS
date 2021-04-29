@@ -65,7 +65,7 @@ Theses hybrid versions are particularly sensitive to changes in hyperparameters
 # ~~~~~~~~~~~~~~~~~~  hybrid SQuaD_MDS algorithm with some light tSNE gradients ~~~~~~~~~~~~~~~~~~
 hparams = {
     'n iter': 1000,
-    'LR': 6000,
+    'LR': 550,
     'exaggerate D': True,
     'stop exaggeration': 0.6,
     'tsne LR multiplier': 0.5,
