@@ -65,7 +65,7 @@ Theses hybrid versions are particularly sensitive to changes in hyperparameters
 # ~~~~~~~~~~~~~~~~~~  hybrid SQuaD_MDS algorithm with some light tSNE gradients ~~~~~~~~~~~~~~~~~~
 hparams = {
     'n iter': 1000,
-    'LR': 550,
+    'LR': 6000,
     'exaggerate D': True,
     'stop exaggeration': 0.6,
     'tsne LR multiplier': 0.5,
@@ -81,7 +81,7 @@ print('hybrid SQuaD_MDS + light tSNE done in ', np.round(time_SQuaD_MDS_light_tS
 # ~~~~~~~~~~~~~~~~~~  hybrid SQuaD_MDS algorithm with some strong tSNE gradient ~~~~~~~~~~~~~~~~~~
 hparams = {
     'n iter': 1000,
-    'LR': 2000, # Higher learning rates tend to be better when mixing with tSNE gardients
+    'LR': 6000, # Higher learning rates tend to be better when mixing with tSNE gardients
     'exaggerate D': True,
     'stop exaggeration': 0.6,
     'tsne LR multiplier': 5.,
