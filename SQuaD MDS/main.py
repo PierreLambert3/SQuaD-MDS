@@ -17,7 +17,7 @@ Xhd, Y = fetch_dataset(datasets[3])
 # ~~~~~~~~~~~~~~~~~~  PCA initialisation + scaling to get a std around 10 ~~~~~~~~~~~~~~~~~~
 # having an initial embedding in another scale would require some fiddling with the learning rate to adjust
 Xld = PCA(n_components=2, whiten=True, copy=True).fit_transform(Xhd).astype(np.float64)
-Xld *= 10*np.std(Xld)
+Xld *= 10/np.std(Xld)
 
 # ~~~~~~~~~~~~~~~~~~  basic SQuaD_MDS algorithm ~~~~~~~~~~~~~~~~~~
 hparams = {
